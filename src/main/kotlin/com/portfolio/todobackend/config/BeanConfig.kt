@@ -1,4 +1,4 @@
-package com.portfolio.todolist.config
+package com.portfolio.todobackend.config
 
 import org.modelmapper.ModelMapper
 import org.springframework.context.annotation.Bean

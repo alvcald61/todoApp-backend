@@ -1,19 +1,20 @@
-package com.portfolio.todolist.model
+package com.portfolio.todobackend.model
 
-import lombok.Data
-import lombok.NoArgsConstructor
+
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
+import javax.validation.constraints.NotBlank
 
 @Document(collection = "User")
-@NoArgsConstructor
 data class User(
     @Id
     var id: String? = null,
     var name: String? = null,
     @Indexed(unique = true)
-    var username: String? = null,
+    @field:NotBlank(message = "Email is required")
+    var email: String? = null,
     var password: String? = null,
-    var todos: MutableList<Todo> = mutableListOf()
+    var todos: MutableList<Todo> = mutableListOf(),
+    var loginMethod: LoginMethod? = null,
 )

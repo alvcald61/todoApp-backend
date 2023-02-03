@@ -1,53 +1,46 @@
-package com.portfolio.todolist.controller
+package com.portfolio.todobackend.controller
 
-import com.portfolio.todolist.TodoListApplication
-import com.portfolio.todolist.service.UserService
-import com.portfolio.todolist.service.dto.LoginDto
-import com.portfolio.todolist.service.dto.TodoDto
-import com.portfolio.todolist.service.dto.UserDto
+import com.portfolio.todobackend.service.UserService
+import com.portfolio.todobackend.service.dto.LoginDto
+import com.portfolio.todobackend.service.dto.TodoDto
+import com.portfolio.todobackend.service.dto.UserDto
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["*"])
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin(origins = ["*"])
 class UserController(
     val userService: UserService
 ) {
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    fun getAllUsers() = userService.listAll()
 
-    @GetMapping("/{username}")
+    @GetMapping("/{email}")
     @ResponseStatus(HttpStatus.FOUND)
-    fun getUserByUsername(@PathVariable username: String) = userService.getUser(username)
+    fun getUserByUsername(@PathVariable email: String) = userService.getUser(email)
 
-    @GetMapping("/{username}/todos")
+    @GetMapping("/{email}/todos")
     @ResponseStatus(HttpStatus.OK)
-    fun getTodosByUserByUsername(@PathVariable username: String) = userService.getTodos(username)
+    fun getTodosByUserByUsername(@PathVariable email: String) = userService.getTodos(email)
 
-    @PostMapping
+
+    @DeleteMapping("/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteUser(@PathVariable email: String) = userService.delete(email)
+
+    @PostMapping("/addTodo/{email}")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody userDto: UserDto) = userService.save(userDto)
-    
-    @DeleteMapping("/{username}")
-    @ResponseStatus(HttpStatus.OK)    
-    fun deleteUser(@PathVariable username: String) = userService.delete(username)
-    
-    @PostMapping("/addTodo/{username}")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun addTodoToUser(@PathVariable username: String, @RequestBody todo: TodoDto) = userService.addTodo(username, todo)
+    fun addTodoToUser(@PathVariable email: String, @RequestBody todo: TodoDto) = userService.addTodo(email, todo)
 
-    @DeleteMapping("/deleteTodo/{username}/{todoId}")
+    @DeleteMapping("/deleteTodo/{email}/{todoId}")
     @ResponseStatus(HttpStatus.OK)
-    fun deleteTodoFromUser(@PathVariable username: String, @PathVariable todoId: String) = userService.removeTodo(username, todoId)
+    fun deleteTodoFromUser(@PathVariable email: String, @PathVariable todoId: String) =
+        userService.removeTodo(email, todoId)
 
-    @PutMapping("/completeTodo/{username}/{todoId}")
+    @PutMapping("/completeTodo/{email}/{todoId}")
     @ResponseStatus(HttpStatus.OK)
-    fun completeTodoFromUser(@PathVariable username: String, @PathVariable todoId: String) = userService.completeTodo(username, todoId)
+    fun completeTodoFromUser(@PathVariable email: String, @PathVariable todoId: String) =
+        userService.completeTodo(email, todoId)
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    fun login(@RequestBody userDto: LoginDto) = userService.login(userDto.username!!, userDto.password)
+
 }

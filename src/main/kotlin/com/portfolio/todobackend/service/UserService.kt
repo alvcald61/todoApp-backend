@@ -1,17 +1,23 @@
-package com.portfolio.todolist.service
+package com.portfolio.todobackend.service
 
-import com.portfolio.todolist.service.dto.LoginDto
-import com.portfolio.todolist.service.dto.TodoDto
-import com.portfolio.todolist.service.dto.UserDto
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken
+import com.portfolio.todobackend.model.User
+import com.portfolio.todobackend.service.dto.LoginDto
+import com.portfolio.todobackend.service.dto.TodoDto
+import com.portfolio.todobackend.service.dto.UserDto
 
 interface UserService {
-    fun getUser(username: String): UserDto
+    fun getUser(email: String): UserDto
     fun listAll(): List<UserDto>
-    fun save(userDto: UserDto): UserDto
+    fun registerUser(userDto: UserDto): UserDto
     fun delete(id: String): Boolean
-    fun addTodo(username: String, todo: TodoDto): UserDto
-    fun removeTodo(username: String, todoId: String)
-    fun completeTodo(username: String, todoId: String)
-    fun getTodos(username: String): List<TodoDto> 
-    fun login(username: String, password: String?): LoginDto
+    fun addTodo(email: String, todo: TodoDto): UserDto
+    fun removeTodo(email: String, todoId: String)
+    fun completeTodo(email: String, todoId: String)
+    fun getTodos(email: String): List<TodoDto> 
+    fun login(email: String, password: String?): LoginDto
+    fun getUserOrRegister(token: GoogleIdToken): User
+    fun registerGoogleUser(token: GoogleIdToken): User
+    fun validateGoogleJwt(jwt: String?): GoogleIdToken
+    fun generateJwt(user: User): LoginDto
 }

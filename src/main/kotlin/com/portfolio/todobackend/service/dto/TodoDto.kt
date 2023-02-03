@@ -1,4 +1,4 @@
-package com.portfolio.todolist.service.dto
+package com.portfolio.todobackend.service.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.text.SimpleDateFormat
